@@ -23,7 +23,16 @@ public class ProductController {
     private final CategoryService categoryService;
 
 
-
+    @GetMapping("/product-detail/{id}")
+    public String details(@PathVariable("id") Long id, Model model) {
+        ProductDto product = productService.getById(id);
+        List<ProductDto> productDtoList = productService.findAllByCategory(product.getCategory().getName());
+        model.addAttribute("products", productDtoList);
+        model.addAttribute("title", "Product Detail");
+        model.addAttribute("page", "Product Detail");
+        model.addAttribute("productDetail", product);
+        return "product-detail";
+    }
     @GetMapping("/find-products/{id}")
     public String productsInCategory(@PathVariable("id") Long id, Model model) {
         List<CategoryDto> categoryDtos = categoryService.getCategoriesAndSize();
