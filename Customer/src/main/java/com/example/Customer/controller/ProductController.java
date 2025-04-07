@@ -21,7 +21,16 @@ public class ProductController {
     private final ProductService productService;
 
     private final CategoryService categoryService;
-
+    @GetMapping("/menu")
+    public String menu(Model model) {
+        model.addAttribute("page", "Products");
+        model.addAttribute("title", "Menu");
+        List<Category> categories = categoryService.findAllByActivatedTrue();
+        List<ProductDto> products = productService.products();
+        model.addAttribute("products", products);
+        model.addAttribute("categories", categories);
+        return "index";
+    }
 
     @GetMapping("/product-detail/{id}")
     public String details(@PathVariable("id") Long id, Model model) {
