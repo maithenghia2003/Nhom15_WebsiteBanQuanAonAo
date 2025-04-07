@@ -109,7 +109,22 @@ public class ProductController {
         }
         return "redirect:/products/0";
     }
-
+    @PostMapping("/save-product")
+    public String saveProduct(@ModelAttribute("productDto") ProductDto product,
+                              @RequestParam("imageProduct") MultipartFile imageProduct,
+                              RedirectAttributes redirectAttributes, Principal principal) {
+        try {
+            if (principal == null) {
+                return "redirect:/login";
+            }
+            productService.save(imageProduct, product);
+            redirectAttributes.addFlashAttribute("success", "Add new product successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Failed to add new product!");
+        }
+        return "redirect:/products/0";
+    }
     @GetMapping("/update-product/{id}")
     public String updateProductForm(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal == null) {
