@@ -31,6 +31,18 @@ public class ProductController {
         model.addAttribute("categories", categories);
         return "index";
     }
+    @GetMapping("/search-product")
+    public String searchProduct(@RequestParam("keyword") String keyword, Model model) {
+        List<CategoryDto> categoryDtos = categoryService.getCategoriesAndSize();
+        List<ProductDto> productDtos = productService.searchProducts(keyword);
+        List<ProductDto> listView = productService.listViewProducts();
+        model.addAttribute("productViews", listView);
+        model.addAttribute("categories", categoryDtos);
+        model.addAttribute("title", "Search Products");
+        model.addAttribute("page", "Result Search");
+        model.addAttribute("products", productDtos);
+        return "products";
+    }
 
     @GetMapping("/product-detail/{id}")
     public String details(@PathVariable("id") Long id, Model model) {
