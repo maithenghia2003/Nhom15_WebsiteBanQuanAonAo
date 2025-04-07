@@ -25,6 +25,12 @@ public class LoginController {
         return "login";
     }
 
-
+    @GetMapping("/register")
+    public String register(Model model) {
+        model.addAttribute("title", "Register");
+        model.addAttribute("page", "Register");
+        model.addAttribute("customerDto", new CustomerDto());
+        return "register";
+    }
 
 }
