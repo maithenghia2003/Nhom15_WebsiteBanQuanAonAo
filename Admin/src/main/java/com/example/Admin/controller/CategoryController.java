@@ -70,3 +70,19 @@ public class CategoryController {
         return "redirect:/categories";
     }
 
+    @RequestMapping(value = "/delete-category", method = {RequestMethod.GET, RequestMethod.PUT})
+    public String delete(Long id, RedirectAttributes redirectAttributes) {
+        try {
+            categoryService.deleteById(id);
+            redirectAttributes.addFlashAttribute("success", "Deleted successfully!");
+        } catch (DataIntegrityViolationException e1) {
+            e1.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Duplicate name of category, please check again!");
+        } catch (Exception e2) {
+            e2.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Error server");
+        }
+        return "redirect:/categories";
+    }
+
+
