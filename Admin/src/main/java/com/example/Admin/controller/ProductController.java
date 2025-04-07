@@ -156,3 +156,61 @@ public class ProductController {
         return "redirect:/products/0";
     }
 }
+@GetMapping("/update-product/{id}")
+public String updateProductForm(@PathVariable("id") Long id, Model model, Principal principal) {
+    if (principal == null) {
+        return "redirect:/login";
+    }
+    List<Category> categories = categoryService.findAllByActivatedTrue();
+    ProductDto productDto = productService.getById(id);
+    model.addAttribute("title", "Add Product");
+    model.addAttribute("categories", categories);
+    model.addAttribute("productDto", productDto);
+    return "update-product";
+}
+
+@PostMapping("/update-product/{id}")
+public String updateProduct(@ModelAttribute("productDto") ProductDto productDto,
+                            @RequestParam("imageProduct") MultipartFile imageProduct,
+                            RedirectAttributes redirectAttributes, Principal principal) {
+    try {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        productService.update(imageProduct, productDto);
+        redirectAttributes.addFlashAttribute("success", "Update successfully!");
+    } catch (Exception e) {
+        e.printStackTrace();
+        redirectAttributes.addFlashAttribute("error", "Error server, please try again!");
+    }
+    return "redirect:/products/0";
+}
+@GetMapping("/update-product/{id}")
+public String updateProductForm(@PathVariable("id") Long id, Model model, Principal principal) {
+    if (principal == null) {
+        return "redirect:/login";
+    }
+    List<Category> categories = categoryService.findAllByActivatedTrue();
+    ProductDto productDto = productService.getById(id);
+    model.addAttribute("title", "Add Product");
+    model.addAttribute("categories", categories);
+    model.addAttribute("productDto", productDto);
+    return "update-product";
+}
+
+@PostMapping("/update-product/{id}")
+public String updateProduct(@ModelAttribute("productDto") ProductDto productDto,
+                            @RequestParam("imageProduct") MultipartFile imageProduct,
+                            RedirectAttributes redirectAttributes, Principal principal) {
+    try {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        productService.update(imageProduct, productDto);
+        redirectAttributes.addFlashAttribute("success", "Update successfully!");
+    } catch (Exception e) {
+        e.printStackTrace();
+        redirectAttributes.addFlashAttribute("error", "Error server, please try again!");
+    }
+    return "redirect:/products/0";
+}
