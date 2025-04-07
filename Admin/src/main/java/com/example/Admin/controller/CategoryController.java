@@ -21,6 +21,21 @@ import java.util.Optional;
 public class CategoryController {
 
     private final CategoryService categoryService;
+    @GetMapping("/categories")
+    public String categories(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/login";
+        }
+        model.addAttribute("title", "Manage Category");
+        List<Category> categories = categoryService.findALl();
+        model.addAttribute("categories", categories);
+        model.addAttribute("size", categories.size());
+        model.addAttribute("categoryNew", new Category());
+        return "categories";
+    }
+
+
 
     @PostMapping("/save-category")
     public String save(@ModelAttribute("categoryNew") Category category, Model model, RedirectAttributes redirectAttributes) {
