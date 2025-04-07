@@ -49,6 +49,20 @@ public class ProductController {
         return "products";
     }
 
+    @GetMapping("/products/{pageNo}")
+    public String allProducts(@PathVariable("pageNo") int pageNo, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Page<ProductDto> products = productService.getAllProducts(pageNo);
+        model.addAttribute("title", "Manage Products");
+        model.addAttribute("size", products.getSize());
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", products.getTotalPages());
+        return "products";
+    }
+
     @GetMapping("/search-products/{pageNo}")
     public String searchProduct(@PathVariable("pageNo") int pageNo,
                                 @RequestParam(value = "keyword") String keyword,
