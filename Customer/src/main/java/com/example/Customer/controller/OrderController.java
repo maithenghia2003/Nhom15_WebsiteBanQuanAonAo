@@ -67,3 +67,9 @@ public class OrderController {
             return "order";
         }
     }
+    @RequestMapping(value = "/cancel-order", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String cancelOrder(Long id, RedirectAttributes attributes) {
+        orderService.cancelOrder(id);
+        attributes.addFlashAttribute("success", "Cancel order successfully!");
+        return "redirect:/orders";
+    }
