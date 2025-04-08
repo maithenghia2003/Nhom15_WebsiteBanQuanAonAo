@@ -54,3 +54,16 @@ public class OrderController {
             }
         }
     }
+    @GetMapping("/orders")
+    public String getOrders(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        } else {
+            Customer customer = customerService.findByUsername(principal.getName());
+            List<Order> orderList = customer.getOrders();
+            model.addAttribute("orders", orderList);
+            model.addAttribute("title", "Order");
+            model.addAttribute("page", "Order");
+            return "order";
+        }
+    }
