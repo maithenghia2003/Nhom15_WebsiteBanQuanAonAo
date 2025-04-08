@@ -67,3 +67,23 @@ public class OrderController {
             return "order";
         }
     }
+    @RequestMapping(value = "/add-order", method = {RequestMethod.POST})
+    public String createOrder(Principal principal,
+                              Model model,
+                              HttpSession session) {
+        if (principal == null) {
+            return "redirect:/login";
+        } else {
+            Customer customer = customerService.findByUsername(principal.getName());
+            ShoppingCart cart = customer.getCart();
+            Order order = orderService.save(cart);
+            session.removeAttribute("totalItems");
+            model.addAttribute("order", order);
+            model.addAttribute("title", "Order Detail");
+            model.addAttribute("page", "Order Detail");
+            model.addAttribute("success", "Add order successfully");
+            return "order-detail";
+        }
+    }
+
+}
